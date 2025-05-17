@@ -1,9 +1,23 @@
 steps:
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/cloud-computing-ss25/sdo-md2pdf-git", "."]
+    args: ["build", "-t", "gcr.io/cloud-computing-ss25/sdo-md2pdf", "."]
+
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/cloud-computing-ss25/sdo-md2pdf"]
+
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - sdo-md2pdf
+      - --image=gcr.io/cloud-computing-ss25/sdo-md2pdf
+      - --region=europe-west3
+      - --platform=managed
+      - --allow-unauthenticated
 
 images:
-  - "gcr.io/cloud-computing-ss25/sdo-md2pdf-git"
+  - "gcr.io/cloud-computing-ss25/sdo-md2pdf"
 
 options:
   logging: CLOUD_LOGGING_ONLY
